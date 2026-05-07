@@ -74,6 +74,14 @@ The initial interfaces are `IRateControlBackend`,
 designed as PX4-first or PX4-compatible single-step control contracts that can
 also be adapted to the current Hakoniwa native controllers.
 
+This repository also includes a separate integration-policy contract:
+
+- `IAllocationFeedbackPolicy`
+
+That policy is not itself a controller backend.
+It exists to describe how allocator status should be interpreted before the
+next rate-control step.
+
 This repository also carries adapter-side shared test sources that can be
 concretized by backend repositories.
 
@@ -93,6 +101,7 @@ Header:
 - `include/hakoniwa/drone/control_adapter/altitude_control_backend.hpp`
 - `include/hakoniwa/drone/control_adapter/horizontal_position_control_backend.hpp`
 - `include/hakoniwa/drone/control_adapter/control_allocation_backend.hpp`
+- `include/hakoniwa/drone/control_adapter/allocation_feedback_policy.hpp`
 
 Key design points:
 
@@ -117,6 +126,9 @@ Key design points:
   actuator limits, trim, and linearization point
 - control-allocation output includes actuator commands plus minimal allocation
   status
+- allocation-feedback policy input includes allocation status only
+- allocation-feedback policy output is a `RateControlSaturation` object for the
+  next rate-control step
 
 ## Implementation Notes
 

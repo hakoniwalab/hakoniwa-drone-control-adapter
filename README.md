@@ -9,10 +9,10 @@ This repository contains public control adapter interfaces only.
 - No Hakoniwa runtime orchestration
 - No backend implementations yet
 
-The initial interfaces are `IRateControlBackend` and
-`IAttitudeControlBackend`, both designed as PX4-first single-step control
-contracts that can also be adapted to the current Hakoniwa native
-controllers.
+The initial interfaces are `IRateControlBackend`,
+`IAttitudeControlBackend`, and `IAltitudeControlBackend`, all designed as
+PX4-first single-step control contracts that can also be adapted to the
+current Hakoniwa native controllers.
 
 ## Current Interface
 
@@ -20,6 +20,7 @@ Header:
 
 - `include/hakoniwa/drone/control_adapter/rate_control_backend.hpp`
 - `include/hakoniwa/drone/control_adapter/attitude_control_backend.hpp`
+- `include/hakoniwa/drone/control_adapter/altitude_control_backend.hpp`
 
 Key design points:
 
@@ -30,4 +31,7 @@ Key design points:
 - attitude-control input is quaternion attitude plus target quaternion and
   yaw-rate feed-forward
 - attitude-control output is a body-frame angular-rate target
+- altitude-control input is vertical position, velocity, acceleration, and
+  target altitude
+- altitude-control output is normalized vertical thrust
 - mixer/control allocation is intentionally out of scope

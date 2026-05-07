@@ -2,6 +2,11 @@
 
 namespace hakoniwa::drone::control_adapter {
 
+enum class AltitudeControlMode {
+    Position,
+    Velocity
+};
+
 struct VerticalPositionState {
     double z{0.0};
 };
@@ -14,11 +19,17 @@ struct VerticalAccelerationState {
     double az{0.0};
 };
 
+struct VerticalVelocityTarget {
+    double vz{0.0};
+};
+
 struct AltitudeControlInput {
+    AltitudeControlMode mode{AltitudeControlMode::Position};
     VerticalPositionState position{};
     VerticalVelocityState velocity{};
     VerticalAccelerationState acceleration{};
     double target_altitude{0.0};
+    VerticalVelocityTarget target_velocity{};
 };
 
 struct NormalizedVerticalThrustCommand {

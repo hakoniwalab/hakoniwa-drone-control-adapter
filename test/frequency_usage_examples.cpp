@@ -79,8 +79,10 @@ int run_frequency_usage_examples(IUsageExampleContext& context)
             const NormalizedVerticalThrustCommand thrust = context.altitude_backend().run(
                 AltitudeControlInput{
                     AltitudeControlMode::Velocity,
+                    {},
                     {0.0},
                     {0.0},
+                    {},
                     {0.0},
                     0.0,
                     {-0.2}

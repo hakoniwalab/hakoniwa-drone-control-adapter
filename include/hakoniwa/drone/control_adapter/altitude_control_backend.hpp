@@ -1,5 +1,7 @@
 #pragma once
 
+#include "hakoniwa/drone/control_adapter/attitude_control_backend.hpp"
+
 namespace hakoniwa::drone::control_adapter {
 
 enum class AltitudeControlMode {
@@ -15,6 +17,12 @@ struct VerticalVelocityState {
     double vz{0.0};
 };
 
+struct BodyVelocityState {
+    double u{0.0};
+    double v{0.0};
+    double w{0.0};
+};
+
 struct VerticalAccelerationState {
     double az{0.0};
 };
@@ -25,8 +33,10 @@ struct VerticalVelocityTarget {
 
 struct AltitudeControlInput {
     AltitudeControlMode mode{AltitudeControlMode::Position};
+    AttitudeQuaternion attitude{};
     VerticalPositionState position{};
     VerticalVelocityState velocity{};
+    BodyVelocityState body_velocity{};
     VerticalAccelerationState acceleration{};
     double target_altitude{0.0};
     VerticalVelocityTarget target_velocity{};

@@ -133,8 +133,8 @@ Key design points:
   yaw-rate feed-forward
 - attitude-control output is a body-frame angular-rate target
 - altitude-control input is mode-aware and includes vertical position,
-  velocity, acceleration, plus either target altitude or target vertical
-  velocity
+  local vertical velocity, body-frame velocity context, current attitude,
+  acceleration, plus either target altitude or target vertical velocity
 - altitude-control output is normalized vertical thrust
 - horizontal-position-control input is mode-aware and includes x/y position,
   velocity, acceleration, current yaw, plus either target x/y position or
@@ -149,6 +149,14 @@ Key design points:
 - allocation-feedback policy input includes allocation status only
 - allocation-feedback policy output is a `RateControlSaturation` object for the
   next rate-control step
+
+Current contract note:
+
+- the altitude interface now carries both a simple local vertical state and
+  the additional attitude/body-velocity context needed by the current
+  Hakoniwa native controller
+- PX4-oriented backends may ignore that extra context when their internal
+  control path only needs local `z` / `vz`
 
 ## Implementation Notes
 

@@ -60,8 +60,10 @@ void run_altitude_position_usage(IUsageExampleContext& context)
     const NormalizedVerticalThrustCommand thrust = context.altitude_backend().run(
         AltitudeControlInput{
             AltitudeControlMode::Position,
+            {},
             {0.0},
             {0.0},
+            {},
             {0.0},
             -0.5,
             {}
@@ -79,8 +81,10 @@ void run_altitude_velocity_usage(IUsageExampleContext& context)
     const NormalizedVerticalThrustCommand thrust = context.altitude_backend().run(
         AltitudeControlInput{
             AltitudeControlMode::Velocity,
+            {},
             {0.0},
             {0.0},
+            {},
             {0.0},
             0.0,
             {-0.3}

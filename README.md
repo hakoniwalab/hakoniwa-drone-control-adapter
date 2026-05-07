@@ -92,6 +92,26 @@ Those shared test sources are intended to serve as:
 
 Concrete execution remains the responsibility of backend repositories.
 
+## Coordinate Contract
+
+The public adapter contract assumes the following coordinate systems.
+
+- world / local frame:
+  - **NED** (`x=north`, `y=east`, `z=down`)
+- body frame:
+  - **FRD** (`x=forward`, `y=right`, `z=down`)
+
+This means:
+
+- position and velocity state exposed in local/world form are expected to use
+  NED
+- body-frame angular rate, body torque, thrust direction, and actuator
+  geometry are expected to use FRD
+- rotor/allocation geometry belongs to the body frame, not to the world frame
+
+Backends may internally convert to other conventions if needed, but the public
+adapter contract itself is defined against NED/FRD.
+
 ## Current Interface
 
 Header:

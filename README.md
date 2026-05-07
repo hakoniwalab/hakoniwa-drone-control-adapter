@@ -69,10 +69,10 @@ This repository contains public control adapter interfaces only.
 - No backend implementations in this repository
 
 The initial interfaces are `IRateControlBackend`,
-`IAttitudeControlBackend`, `IAltitudeControlBackend`, and
-`IHorizontalPositionControlBackend`, all designed as PX4-first single-step
-control contracts that can also be adapted to the current Hakoniwa native
-controllers.
+`IAttitudeControlBackend`, `IAltitudeControlBackend`,
+`IHorizontalPositionControlBackend`, and `IControlAllocationBackend`, all
+designed as PX4-first or PX4-compatible single-step control contracts that can
+also be adapted to the current Hakoniwa native controllers.
 
 This repository also carries adapter-side shared test sources that can be
 concretized by backend repositories.
@@ -92,6 +92,7 @@ Header:
 - `include/hakoniwa/drone/control_adapter/attitude_control_backend.hpp`
 - `include/hakoniwa/drone/control_adapter/altitude_control_backend.hpp`
 - `include/hakoniwa/drone/control_adapter/horizontal_position_control_backend.hpp`
+- `include/hakoniwa/drone/control_adapter/control_allocation_backend.hpp`
 
 Key design points:
 
@@ -112,7 +113,10 @@ Key design points:
 - horizontal-position-control output is a target roll/pitch tilt pair
 - horizontal-position-control tilt output is a derived adapter contract for
   Hakoniwa compatibility, not a direct PX4 public-core type
-- mixer/control allocation is intentionally out of scope
+- control-allocation input includes thrust, body torque, actuator geometry,
+  actuator limits, trim, and linearization point
+- control-allocation output includes actuator commands plus minimal allocation
+  status
 
 ## Implementation Notes
 

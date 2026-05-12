@@ -70,9 +70,10 @@ This repository contains public control adapter interfaces only.
 
 The initial interfaces are `IRateControlBackend`,
 `IAttitudeControlBackend`, `IAltitudeControlBackend`,
-`IHorizontalPositionControlBackend`, and `IControlAllocationBackend`, all
-designed as PX4-first or PX4-compatible single-step control contracts that can
-also be adapted to the current Hakoniwa native controllers.
+`IHorizontalPositionControlBackend`, `IPositionControl3DBackend`, and
+`IControlAllocationBackend`, all designed as PX4-first or PX4-compatible
+single-step control contracts that can also be adapted to the current Hakoniwa
+native controllers.
 
 This repository also includes a separate integration-policy contract:
 
@@ -120,6 +121,7 @@ Header:
 - `include/hakoniwa/drone/control_adapter/attitude_control_backend.hpp`
 - `include/hakoniwa/drone/control_adapter/altitude_control_backend.hpp`
 - `include/hakoniwa/drone/control_adapter/horizontal_position_control_backend.hpp`
+- `include/hakoniwa/drone/control_adapter/position_control_3d_backend.hpp`
 - `include/hakoniwa/drone/control_adapter/control_allocation_backend.hpp`
 - `include/hakoniwa/drone/control_adapter/allocation_feedback_policy.hpp`
 
@@ -142,6 +144,11 @@ Key design points:
 - horizontal-position-control output is a target roll/pitch tilt pair
 - horizontal-position-control tilt output is a derived adapter contract for
   Hakoniwa compatibility, not a direct PX4 public-core type
+- 3-axis-position-control input separates position and velocity entry points
+  so PX4-style NaN setpoint semantics do not leak into the public API
+- 3-axis-position-control output is a target attitude plus normalized
+  body-z collective thrust, with optional backend-native thrust-vector
+  diagnostics
 - control-allocation input includes thrust, body torque, actuator geometry,
   actuator limits, trim, and linearization point
 - control-allocation output includes actuator commands plus minimal allocation
@@ -157,6 +164,9 @@ Current contract note:
   Hakoniwa native controller
 - PX4-oriented backends may ignore that extra context when their internal
   control path only needs local `z` / `vz`
+- the 3-axis position-control interface is intended for backends that preserve
+  the coupled position-controller path through target attitude and collective
+  thrust generation
 
 ## Implementation Notes
 

@@ -99,6 +99,8 @@ public:
     virtual void reset() = 0;
 
     virtual void set_config(const EkfAdapterConfig& config) = 0;
+    virtual void set_in_air_status(bool in_air) = 0;
+    virtual void set_vehicle_at_rest(bool at_rest) = 0;
 
     virtual void push_imu(const EkfImuInput& input, double dt_sec) = 0;
     virtual void push_mag(const EkfMagInput& input) = 0;

@@ -5,13 +5,7 @@
 
 namespace hakoniwa::drone::control_adapter {
 
-/**
- * Public Hakoniwa-facing sensor input that mirrors the fields currently sent in
- * HIL_SENSOR. The adapter implementation is expected to populate this from the
- * existing Hakoniwa HIL transport without introducing a new runtime sensor
- * message family.
- */
-struct EkfHilSensorInput {
+struct EkfImuInput {
     std::uint64_t time_usec{0};
 
     double xacc_mps2{0.0};
@@ -21,10 +15,18 @@ struct EkfHilSensorInput {
     double xgyro_rad_s{0.0};
     double ygyro_rad_s{0.0};
     double zgyro_rad_s{0.0};
+};
+
+struct EkfMagInput {
+    std::uint64_t time_usec{0};
 
     double xmag_gauss{0.0};
     double ymag_gauss{0.0};
     double zmag_gauss{0.0};
+};
+
+struct EkfBaroInput {
+    std::uint64_t time_usec{0};
 
     double pressure_alt_m{0.0};
 };
@@ -86,7 +88,7 @@ struct EkfEstimatedState {
  * Public EKF adapter contract.
  *
  * Intended implementation policy:
- * - runtime inputs are Hakoniwa HIL_SENSOR and HIL_GPS compatible data
+ * - runtime inputs are Hakoniwa-owned sensor data split by sensor type
  * - the implementation converts those into EKF samples
  * - GPS speed accuracy (`sacc`) comes from GPS config, not from HIL_GPS
  */
@@ -98,8 +100,10 @@ public:
 
     virtual void set_config(const EkfAdapterConfig& config) = 0;
 
-    virtual void push_hil_sensor(const EkfHilSensorInput& input, double dt_sec) = 0;
-    virtual void push_hil_gps(const EkfHilGpsInput& input) = 0;
+    virtual void push_imu(const EkfImuInput& input, double dt_sec) = 0;
+    virtual void push_mag(const EkfMagInput& input) = 0;
+    virtual void push_baro(const EkfBaroInput& input) = 0;
+    virtual void push_gps(const EkfHilGpsInput& input) = 0;
 
     virtual void update() = 0;
 

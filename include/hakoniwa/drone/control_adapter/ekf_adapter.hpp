@@ -66,6 +66,7 @@ struct EkfGpsQualityConfig {
 
 struct EkfAdapterConfig {
     EkfGpsQualityConfig gps_quality{};
+    double mag_declination_deg{0.0};
 };
 
 struct EkfEstimatedState {
@@ -82,6 +83,21 @@ struct EkfEstimatedState {
     bool attitude_valid{false};
     bool local_position_valid{false};
     bool global_position_valid{false};
+
+    int active_horizontal_aiding_sources{0};
+    int active_horizontal_position_aiding_sources{0};
+    int active_horizontal_velocity_aiding_sources{0};
+    int active_vertical_position_aiding_sources{0};
+    int active_vertical_velocity_aiding_sources{0};
+
+    bool gnss_pos_fused{false};
+    bool gnss_vel_fused{false};
+    bool gps_hgt_fused{false};
+
+    double horizontal_velocity_innovation_test_ratio{0.0};
+    double vertical_velocity_innovation_test_ratio{0.0};
+    double horizontal_position_innovation_test_ratio{0.0};
+    double vertical_position_innovation_test_ratio{0.0};
 };
 
 /**

@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cstdint>
+#include <optional>
 
 namespace hakoniwa::drone::control_adapter {
 
@@ -33,8 +34,7 @@ struct EkfBaroInput {
 
 /**
  * Public Hakoniwa-facing sensor input that mirrors the fields currently sent in
- * HIL_GPS. The missing EKF speed accuracy term (`sacc`) is supplied through
- * GPS quality config rather than through this runtime message.
+ * HIL_GPS plus the speed accuracy term needed by PX4 EKF.
  */
 struct EkfHilGpsInput {
     std::uint64_t time_usec{0};
@@ -54,19 +54,38 @@ struct EkfHilGpsInput {
     int satellites_visible{0};
     double eph_m{0.0};
     double epv_m{0.0};
-};
-
-/**
- * Additional GPS metadata needed by the EKF but not currently carried by
- * HIL_GPS.
- */
-struct EkfGpsQualityConfig {
     double sacc_mps{0.5};
 };
 
 struct EkfAdapterConfig {
-    EkfGpsQualityConfig gps_quality{};
+    struct Px4EkfParams {
+        std::optional<int> ekf2_gps_ctrl{};
+        std::optional<int> ekf2_gps_check{};
+        std::optional<double> ekf2_req_eph{};
+        std::optional<double> ekf2_req_epv{};
+        std::optional<double> ekf2_req_sacc{};
+        std::optional<int> ekf2_req_nsats{};
+        std::optional<double> ekf2_req_pdop{};
+        std::optional<int> ekf2_req_fix{};
+        std::optional<double> ekf2_gps_p_noise{};
+        std::optional<double> ekf2_gps_v_noise{};
+        std::optional<double> ekf2_gps_p_gate{};
+        std::optional<double> ekf2_gps_v_gate{};
+        std::optional<int> ekf2_hgt_ref{};
+        std::optional<int> ekf2_baro_ctrl{};
+        std::optional<double> ekf2_baro_noise{};
+        std::optional<double> ekf2_baro_gate{};
+        std::optional<double> ekf2_mag_decl{};
+        std::optional<int> ekf2_decl_type{};
+        std::optional<int> ekf2_mag_type{};
+        std::optional<double> ekf2_head_noise{};
+        std::optional<double> ekf2_hdg_gate{};
+        std::optional<double> ekf2_mag_noise{};
+        std::optional<double> ekf2_mag_gate{};
+    };
+
     double mag_declination_deg{0.0};
+    Px4EkfParams px4_params{};
 };
 
 struct EkfEstimatedState {
@@ -106,7 +125,7 @@ struct EkfEstimatedState {
  * Intended implementation policy:
  * - runtime inputs are Hakoniwa-owned sensor data split by sensor type
  * - the implementation converts those into EKF samples
- * - GPS speed accuracy (`sacc`) comes from GPS config, not from HIL_GPS
+ * - GPS speed accuracy (`sacc`) is carried with the GPS runtime sample
  */
 class IEkfAdapter {
 public:

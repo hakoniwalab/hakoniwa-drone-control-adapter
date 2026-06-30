@@ -1,5 +1,7 @@
 #pragma once
 
+#include "hakoniwa/drone/control_adapter/control_adapter_context.hpp"
+
 #include <cstdint>
 
 namespace hakoniwa::drone::control_adapter {
@@ -40,6 +42,7 @@ struct RateControlInput {
     double dt_sec{0.0};
     bool landed{false};
     RateControlSaturation saturation{};
+    const IControlAdapterContext* context{nullptr};
 };
 
 struct BodyTorqueCommand {

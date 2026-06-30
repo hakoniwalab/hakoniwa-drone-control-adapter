@@ -1,5 +1,6 @@
 #pragma once
 
+#include "hakoniwa/drone/control_adapter/control_adapter_context.hpp"
 #include "hakoniwa/drone/control_adapter/rate_control_backend.hpp"
 
 namespace hakoniwa::drone::control_adapter {
@@ -15,6 +16,7 @@ struct AttitudeControlInput {
     AttitudeQuaternion attitude{};
     AttitudeQuaternion target_attitude{};
     double target_yaw_rate_rad_sec{0.0};
+    const IControlAdapterContext* context{nullptr};
 };
 
 class IAttitudeControlBackend {

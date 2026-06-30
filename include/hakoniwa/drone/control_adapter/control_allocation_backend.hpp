@@ -1,5 +1,7 @@
 #pragma once
 
+#include "hakoniwa/drone/control_adapter/control_adapter_context.hpp"
+
 #include <array>
 #include <cstddef>
 
@@ -53,6 +55,7 @@ struct ControlAllocationInput {
     ThrustTorqueCommand command{};
     std::array<RotorActuatorConfig, kMaxActuatorCount> actuators{};
     std::size_t actuator_count{0};
+    const IControlAdapterContext* context{nullptr};
 };
 
 struct ActuatorCommandArray {

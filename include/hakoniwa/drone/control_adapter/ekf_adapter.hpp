@@ -134,7 +134,11 @@ public:
     virtual void reset() = 0;
 
     virtual void set_config(const EkfAdapterConfig& config) = 0;
+    /** Set arming independently of whether the vehicle has left the ground. */
+    virtual void set_armed_status(bool armed) = 0;
+    /** Set whether the vehicle is airborne. This must not imply arming. */
     virtual void set_in_air_status(bool in_air) = 0;
+    /** Set whether the vehicle is stationary, including while disarmed. */
     virtual void set_vehicle_at_rest(bool at_rest) = 0;
 
     virtual void push_imu(const EkfImuInput& input, double dt_sec) = 0;

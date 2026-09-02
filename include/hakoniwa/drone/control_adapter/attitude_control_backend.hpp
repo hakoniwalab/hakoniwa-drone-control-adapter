@@ -17,6 +17,10 @@ struct AttitudeControlInput {
     AttitudeQuaternion target_attitude{};
     double target_yaw_rate_rad_sec{0.0};
     const IControlAdapterContext* context{nullptr};
+    // Current body-frame angular velocity in radians per second.
+    AngularRateState rate{};
+    // Elapsed controller time in seconds.
+    double dt_sec{0.0};
 };
 
 class IAttitudeControlBackend {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "hakoniwa/drone/control_adapter/control_adapter_context.hpp"
+#include "hakoniwa/drone/control_adapter/rate_control_backend.hpp"
 
 #include <array>
 #include <cstddef>
@@ -18,6 +19,23 @@ struct ThrustTorqueCommand {
     double torque_x{0.0};
     double torque_y{0.0};
     double torque_z{0.0};
+};
+
+/**
+ * @brief Current Euler attitude using the public NED/FRD coordinate contract.
+ *
+ * The local/world reference frame is NED (North-East-Down) and the aircraft
+ * body frame is FRD (Forward-Right-Down). The values represent the current
+ * orientation of the body FRD frame with respect to the local NED frame.
+ *
+ * roll_rad  (phi)   : roll angle about the FRD +X (Forward) axis [rad]
+ * pitch_rad (theta) : pitch angle about the FRD +Y (Right) axis [rad]
+ * yaw_rad   (psi)   : yaw angle about the FRD +Z (Down) axis [rad]
+ */
+struct EulerAttitudeState {
+    double roll_rad{0.0};
+    double pitch_rad{0.0};
+    double yaw_rad{0.0};
 };
 
 struct ActuatorAxis {
@@ -56,6 +74,13 @@ struct ControlAllocationInput {
     std::array<RotorActuatorConfig, kMaxActuatorCount> actuators{};
     std::size_t actuator_count{0};
     const IControlAdapterContext* context{nullptr};
+
+    // Current vehicle state used by state-dependent allocation backends.
+    // These fields are intentionally appended so existing aggregate callers
+    // that initialize the original command/actuators/count/context prefix keep
+    // their source-level field mapping.
+    EulerAttitudeState attitude{};
+    AngularRateState angular_rate{};
 };
 
 struct ActuatorCommandArray {

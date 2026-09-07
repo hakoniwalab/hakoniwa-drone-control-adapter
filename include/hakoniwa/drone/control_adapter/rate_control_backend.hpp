@@ -6,6 +6,17 @@
 
 namespace hakoniwa::drone::control_adapter {
 
+/**
+ * @brief Current angular velocity resolved in the body FRD frame [rad/s].
+ *
+ * The public body-frame contract is FRD (Forward-Right-Down):
+ *   p : angular velocity about +X (Forward)
+ *   q : angular velocity about +Y (Right)
+ *   r : angular velocity about +Z (Down)
+ *
+ * These are body angular-velocity components. They are not the Euler-angle
+ * derivatives roll_dot / pitch_dot / yaw_dot.
+ */
 struct AngularRateState {
     double p{0.0};
     double q{0.0};

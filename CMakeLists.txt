@@ -41,4 +41,13 @@ if(HAKONIWA_DRONE_CONTROL_ADAPTER_BUILD_TESTS)
     add_executable(sensor_data_type_contract_test test/sensor_data_type_contract.cpp)
     target_link_libraries(sensor_data_type_contract_test PRIVATE hakoniwa_drone_control_adapter)
     add_test(NAME sensor_data_type_contract COMMAND sensor_data_type_contract_test)
+
+    add_executable(flight_phase_contract_off_test test/flight_phase_contract.cpp)
+    target_link_libraries(flight_phase_contract_off_test PRIVATE hakoniwa_drone_control_adapter)
+    add_test(NAME flight_phase_contract_off COMMAND flight_phase_contract_off_test)
+
+    add_executable(flight_phase_contract_on_test test/flight_phase_contract.cpp)
+    target_link_libraries(flight_phase_contract_on_test PRIVATE hakoniwa_drone_control_adapter)
+    target_compile_definitions(flight_phase_contract_on_test PRIVATE HAKO_ENABLE_FLIGHT_PHASE)
+    add_test(NAME flight_phase_contract_on COMMAND flight_phase_contract_on_test)
 endif()

@@ -36,7 +36,13 @@ inline constexpr std::uint32_t kPluginAbiVersion = 1;
 /// Layout revision of the interface headers. Bumped with every change that
 /// alters an interface or a struct the interfaces pass (a host and a plugin
 /// built from different revisions must not exchange objects).
+/// HAKO_ENABLE_FLIGHT_PHASE adds PositionControl3DPositionInput::flight_phase: a build with it has its own
+/// revision, so a host and a plugin built with different settings reject each other.
+#ifdef HAKO_ENABLE_FLIGHT_PHASE
+inline constexpr const char* kInterfaceRevision = "2026-10-11.1-flight-phase";
+#else
 inline constexpr const char* kInterfaceRevision = "2026-10-09.1";
+#endif
 
 enum class BackendKind : std::uint32_t {
     RateControl = 1,               // IRateControlBackend

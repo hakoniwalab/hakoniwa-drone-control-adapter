@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <optional>
 
 #include "hakoniwa/drone/control_adapter/altitude_control_backend.hpp"
@@ -27,6 +28,18 @@ struct PositionControl3DState {
     double yaw_rad{0.0};
 };
 
+#ifdef HAKO_ENABLE_FLIGHT_PHASE
+// The phase of flight the caller requests (HAKO_ENABLE_FLIGHT_PHASE builds only; the host and every
+// plugin must be built with the same setting, see kInterfaceRevision). The caller owns the phase
+// (an API service, a tuning runner); a backend shapes the takeoff and the landing its autopilot's way
+// and keeps its own internal state of them.
+enum class FlightPhase : std::uint8_t {
+    Normal = 0,   // hold / move to the target
+    Takeoff = 1,  // the target is the takeoff point above the vehicle
+    Landing = 2,  // descend at the autopilot's landing speed; the target gives the horizontal position
+};
+#endif
+
 struct PositionControl3DPositionInput {
     PositionControl3DState state{};
 
@@ -42,6 +55,10 @@ struct PositionControl3DPositionInput {
     // use zero yaw-rate feed-forward.
     std::optional<double> target_yaw_rad{};
     std::optional<double> target_yaw_rate_rad_sec{};
+
+#ifdef HAKO_ENABLE_FLIGHT_PHASE
+    FlightPhase flight_phase{FlightPhase::Normal};
+#endif
 };
 
 struct PositionControl3DVelocityInput {

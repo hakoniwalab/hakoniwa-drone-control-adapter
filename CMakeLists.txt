@@ -37,4 +37,8 @@ if(HAKONIWA_DRONE_CONTROL_ADAPTER_BUILD_TESTS)
         NAME control_allocation_input_contract
         COMMAND control_allocation_input_contract_test
     )
+
+    add_executable(sensor_data_type_contract_test test/sensor_data_type_contract.cpp)
+    target_link_libraries(sensor_data_type_contract_test PRIVATE hakoniwa_drone_control_adapter)
+    add_test(NAME sensor_data_type_contract COMMAND sensor_data_type_contract_test)
 endif()

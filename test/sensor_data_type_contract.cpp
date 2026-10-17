@@ -25,7 +25,7 @@ int main()
         std::cerr << "sensor data type name contract changed\n";
         return EXIT_FAILURE;
     }
-    if (std::string(plugin::kInterfaceRevision) != "2026-10-09.1") {
+    if (std::string(plugin::kInterfaceRevision) != "2026-10-11.1-flight-phase") {
         std::cerr << "sensor data type names must not change the interface revision\n";
         return EXIT_FAILURE;
     }

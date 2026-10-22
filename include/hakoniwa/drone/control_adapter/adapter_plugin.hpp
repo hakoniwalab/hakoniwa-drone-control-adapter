@@ -37,7 +37,11 @@ inline constexpr std::uint32_t kPluginAbiVersion = 1;
 /// alters an interface or a struct the interfaces pass (a host and a plugin
 /// built from different revisions must not exchange objects).
 /// The flight-phase field is part of this revision's standard interface.
+#ifdef HAKO_ENABLE_GOTO_SPEED_LIMIT
+inline constexpr const char* kInterfaceRevision = "2026-10-22.1-flight-phase-goto-speed";
+#else
 inline constexpr const char* kInterfaceRevision = "2026-10-11.1-flight-phase";
+#endif
 
 enum class BackendKind : std::uint32_t {
     RateControl = 1,               // IRateControlBackend

@@ -4,6 +4,17 @@ project(hakoniwa_drone_control_adapter LANGUAGES CXX)
 
 add_library(hakoniwa_drone_control_adapter INTERFACE)
 
+option(
+    HAKO_ENABLE_GOTO_SPEED_LIMIT
+    "Expose the per-command goto horizontal speed limit"
+    OFF
+)
+
+if(HAKO_ENABLE_GOTO_SPEED_LIMIT)
+    target_compile_definitions(hakoniwa_drone_control_adapter
+        INTERFACE HAKO_ENABLE_GOTO_SPEED_LIMIT)
+endif()
+
 target_include_directories(hakoniwa_drone_control_adapter
     INTERFACE
         ${CMAKE_CURRENT_SOURCE_DIR}/include

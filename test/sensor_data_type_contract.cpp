@@ -25,7 +25,12 @@ int main()
         std::cerr << "sensor data type name contract changed\n";
         return EXIT_FAILURE;
     }
-    if (std::string(plugin::kInterfaceRevision) != "2026-10-11.1-flight-phase") {
+#ifdef HAKO_ENABLE_GOTO_SPEED_LIMIT
+    constexpr const char* expected_revision = "2026-10-22.1-flight-phase-goto-speed";
+#else
+    constexpr const char* expected_revision = "2026-10-11.1-flight-phase";
+#endif
+    if (std::string(plugin::kInterfaceRevision) != expected_revision) {
         std::cerr << "sensor data type names must not change the interface revision\n";
         return EXIT_FAILURE;
     }

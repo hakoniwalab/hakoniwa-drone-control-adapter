@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 namespace hakoniwa::drone::control_adapter {
 
 enum class HorizontalControlMode {
@@ -45,6 +47,10 @@ struct HorizontalPositionControlInput {
     double yaw_rad{0.0};
     HorizontalPositionTarget target_position{};
     HorizontalVelocityTarget target_velocity{};
+#ifdef HAKO_ENABLE_GOTO_SPEED_LIMIT
+    // Per-command horizontal speed limit in m/s (absent: the backend's configured speed).
+    std::optional<double> horizontal_speed_limit_m_s{};
+#endif
 };
 
 class IHorizontalPositionControlBackend {

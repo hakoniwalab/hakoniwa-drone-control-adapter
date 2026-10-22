@@ -54,6 +54,10 @@ struct PositionControl3DPositionInput {
     std::optional<double> target_yaw_rate_rad_sec{};
 
     FlightPhase flight_phase{FlightPhase::Normal};
+#ifdef HAKO_ENABLE_GOTO_SPEED_LIMIT
+    // Per-command horizontal speed limit in m/s (absent: the backend's configured speed).
+    std::optional<double> horizontal_speed_limit_m_s{};
+#endif
 };
 
 struct PositionControl3DVelocityInput {

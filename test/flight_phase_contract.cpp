@@ -14,7 +14,19 @@ int main()
         std::cerr << "flight_phase must default to Normal\n";
         return EXIT_FAILURE;
     }
-    if (std::string_view{plugin::kInterfaceRevision} != "2026-10-11.1-flight-phase") {
+#ifdef HAKO_ENABLE_GOTO_SPEED_LIMIT
+    input.horizontal_speed_limit_m_s = 2.0;
+    HorizontalPositionControlInput horizontal_input{};
+    horizontal_input.horizontal_speed_limit_m_s = 3.0;
+    if (!input.horizontal_speed_limit_m_s || !horizontal_input.horizontal_speed_limit_m_s) {
+        std::cerr << "goto-speed fields must be available in the enabled build\n";
+        return EXIT_FAILURE;
+    }
+    constexpr std::string_view expected_revision = "2026-10-22.1-flight-phase-goto-speed";
+#else
+    constexpr std::string_view expected_revision = "2026-10-11.1-flight-phase";
+#endif
+    if (std::string_view{plugin::kInterfaceRevision} != expected_revision) {
         std::cerr << "flight-phase build has the wrong interface revision\n";
         return EXIT_FAILURE;
     }

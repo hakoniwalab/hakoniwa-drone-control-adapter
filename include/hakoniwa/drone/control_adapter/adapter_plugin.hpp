@@ -37,8 +37,13 @@ inline constexpr std::uint32_t kPluginAbiVersion = 1;
 /// alters an interface or a struct the interfaces pass (a host and a plugin
 /// built from different revisions must not exchange objects).
 /// The flight-phase field is part of this revision's standard interface.
-#ifdef HAKO_ENABLE_GOTO_SPEED_LIMIT
+/// The sensor model v2 switch adds the barometer pressure and temperature to EkfBaroInput.
+#if defined(HAKO_ENABLE_GOTO_SPEED_LIMIT) && defined(HAKO_ENABLE_SENSOR_MODEL_V2)
+inline constexpr const char* kInterfaceRevision = "2026-10-31.1-flight-phase-goto-speed-baro-pressure";
+#elif defined(HAKO_ENABLE_GOTO_SPEED_LIMIT)
 inline constexpr const char* kInterfaceRevision = "2026-10-22.1-flight-phase-goto-speed";
+#elif defined(HAKO_ENABLE_SENSOR_MODEL_V2)
+inline constexpr const char* kInterfaceRevision = "2026-10-31.1-flight-phase-baro-pressure";
 #else
 inline constexpr const char* kInterfaceRevision = "2026-10-11.1-flight-phase";
 #endif

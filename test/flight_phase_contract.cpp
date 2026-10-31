@@ -22,7 +22,13 @@ int main()
         std::cerr << "goto-speed fields must be available in the enabled build\n";
         return EXIT_FAILURE;
     }
+#ifdef HAKO_ENABLE_SENSOR_MODEL_V2
+    constexpr std::string_view expected_revision = "2026-10-31.1-flight-phase-goto-speed-baro-pressure";
+#else
     constexpr std::string_view expected_revision = "2026-10-22.1-flight-phase-goto-speed";
+#endif
+#elif defined(HAKO_ENABLE_SENSOR_MODEL_V2)
+    constexpr std::string_view expected_revision = "2026-10-31.1-flight-phase-baro-pressure";
 #else
     constexpr std::string_view expected_revision = "2026-10-11.1-flight-phase";
 #endif

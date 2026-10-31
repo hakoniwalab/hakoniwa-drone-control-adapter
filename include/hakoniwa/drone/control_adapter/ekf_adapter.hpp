@@ -30,6 +30,12 @@ struct EkfBaroInput {
     std::uint64_t time_usec{0};
 
     double pressure_alt_m{0.0};
+#ifdef HAKO_ENABLE_SENSOR_MODEL_V2
+    // The barometer's own output, as PX4 SITL receives it in HIL_SENSOR: the adapter turns it into a height
+    // with the autopilot's own computation (pressure_alt_m stays for adapters that use the host's height).
+    double pressure_pa{0.0};
+    double temperature_c{15.0};
+#endif
 };
 
 /**

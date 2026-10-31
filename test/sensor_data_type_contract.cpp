@@ -25,8 +25,12 @@ int main()
         std::cerr << "sensor data type name contract changed\n";
         return EXIT_FAILURE;
     }
-#ifdef HAKO_ENABLE_GOTO_SPEED_LIMIT
+#if defined(HAKO_ENABLE_GOTO_SPEED_LIMIT) && defined(HAKO_ENABLE_SENSOR_MODEL_V2)
+    constexpr const char* expected_revision = "2026-10-31.1-flight-phase-goto-speed-baro-pressure";
+#elif defined(HAKO_ENABLE_GOTO_SPEED_LIMIT)
     constexpr const char* expected_revision = "2026-10-22.1-flight-phase-goto-speed";
+#elif defined(HAKO_ENABLE_SENSOR_MODEL_V2)
+    constexpr const char* expected_revision = "2026-10-31.1-flight-phase-baro-pressure";
 #else
     constexpr const char* expected_revision = "2026-10-11.1-flight-phase";
 #endif

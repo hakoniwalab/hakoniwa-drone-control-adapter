@@ -17,6 +17,10 @@ int main()
     static_assert(std::is_same_v<decltype(EkfHilGpsInput::lat_deg), double>);
     static_assert(std::is_same_v<decltype(EkfHilGpsInput::vn_mps), double>);
     static_assert(std::is_same_v<decltype(RateControlInput::rate), AngularRateState>);
+#ifdef HAKO_ENABLE_GYRO_SAMPLE_INPUT
+    static_assert(std::is_same_v<decltype(GyroSample::time_usec), std::uint64_t>);
+    static_assert(std::is_same_v<decltype(RateControlInput::gyro_samples), const GyroSample*>);
+#endif
     const bool names_are_stable =
         std::string(sensor_data_type::kExact) == "exact"
         && std::string(sensor_data_type::kImuFifoInt16) == "imu_fifo_int16"
@@ -25,12 +29,20 @@ int main()
         std::cerr << "sensor data type name contract changed\n";
         return EXIT_FAILURE;
     }
-#if defined(HAKO_ENABLE_GOTO_SPEED_LIMIT) && defined(HAKO_ENABLE_SENSOR_MODEL_V2)
+#if defined(HAKO_ENABLE_GOTO_SPEED_LIMIT) && defined(HAKO_ENABLE_SENSOR_MODEL_V2) && defined(HAKO_ENABLE_GYRO_SAMPLE_INPUT)
+    constexpr const char* expected_revision = "2026-10-31.1-flight-phase-goto-speed-baro-pressure-gyro-samples";
+#elif defined(HAKO_ENABLE_GOTO_SPEED_LIMIT) && defined(HAKO_ENABLE_SENSOR_MODEL_V2)
     constexpr const char* expected_revision = "2026-10-31.1-flight-phase-goto-speed-baro-pressure";
+#elif defined(HAKO_ENABLE_GOTO_SPEED_LIMIT) && defined(HAKO_ENABLE_GYRO_SAMPLE_INPUT)
+    constexpr const char* expected_revision = "2026-10-22.1-flight-phase-goto-speed-gyro-samples";
 #elif defined(HAKO_ENABLE_GOTO_SPEED_LIMIT)
     constexpr const char* expected_revision = "2026-10-22.1-flight-phase-goto-speed";
+#elif defined(HAKO_ENABLE_SENSOR_MODEL_V2) && defined(HAKO_ENABLE_GYRO_SAMPLE_INPUT)
+    constexpr const char* expected_revision = "2026-10-31.1-flight-phase-baro-pressure-gyro-samples";
 #elif defined(HAKO_ENABLE_SENSOR_MODEL_V2)
     constexpr const char* expected_revision = "2026-10-31.1-flight-phase-baro-pressure";
+#elif defined(HAKO_ENABLE_GYRO_SAMPLE_INPUT)
+    constexpr const char* expected_revision = "2026-10-11.1-flight-phase-gyro-samples";
 #else
     constexpr const char* expected_revision = "2026-10-11.1-flight-phase";
 #endif

@@ -38,12 +38,21 @@ inline constexpr std::uint32_t kPluginAbiVersion = 1;
 /// built from different revisions must not exchange objects).
 /// The flight-phase field is part of this revision's standard interface.
 /// The sensor model v2 switch adds the barometer pressure and temperature to EkfBaroInput.
-#if defined(HAKO_ENABLE_GOTO_SPEED_LIMIT) && defined(HAKO_ENABLE_SENSOR_MODEL_V2)
+/// The gyro sample input switch adds the gyro samples and rotor speeds to RateControlInput.
+#if defined(HAKO_ENABLE_GOTO_SPEED_LIMIT) && defined(HAKO_ENABLE_SENSOR_MODEL_V2) && defined(HAKO_ENABLE_GYRO_SAMPLE_INPUT)
+inline constexpr const char* kInterfaceRevision = "2026-10-31.1-flight-phase-goto-speed-baro-pressure-gyro-samples";
+#elif defined(HAKO_ENABLE_GOTO_SPEED_LIMIT) && defined(HAKO_ENABLE_SENSOR_MODEL_V2)
 inline constexpr const char* kInterfaceRevision = "2026-10-31.1-flight-phase-goto-speed-baro-pressure";
+#elif defined(HAKO_ENABLE_GOTO_SPEED_LIMIT) && defined(HAKO_ENABLE_GYRO_SAMPLE_INPUT)
+inline constexpr const char* kInterfaceRevision = "2026-10-22.1-flight-phase-goto-speed-gyro-samples";
 #elif defined(HAKO_ENABLE_GOTO_SPEED_LIMIT)
 inline constexpr const char* kInterfaceRevision = "2026-10-22.1-flight-phase-goto-speed";
+#elif defined(HAKO_ENABLE_SENSOR_MODEL_V2) && defined(HAKO_ENABLE_GYRO_SAMPLE_INPUT)
+inline constexpr const char* kInterfaceRevision = "2026-10-31.1-flight-phase-baro-pressure-gyro-samples";
 #elif defined(HAKO_ENABLE_SENSOR_MODEL_V2)
 inline constexpr const char* kInterfaceRevision = "2026-10-31.1-flight-phase-baro-pressure";
+#elif defined(HAKO_ENABLE_GYRO_SAMPLE_INPUT)
+inline constexpr const char* kInterfaceRevision = "2026-10-11.1-flight-phase-gyro-samples";
 #else
 inline constexpr const char* kInterfaceRevision = "2026-10-11.1-flight-phase";
 #endif

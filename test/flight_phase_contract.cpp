@@ -14,7 +14,7 @@ int main()
         std::cerr << "flight_phase must default to Normal\n";
         return EXIT_FAILURE;
     }
-#ifdef HAKO_ENABLE_GOTO_SPEED_LIMIT
+#if defined(HAKO_ENABLE_GOTO_SPEED_LIMIT)
     input.horizontal_speed_limit_m_s = 2.0;
     HorizontalPositionControlInput horizontal_input{};
     horizontal_input.horizontal_speed_limit_m_s = 3.0;
@@ -22,13 +22,21 @@ int main()
         std::cerr << "goto-speed fields must be available in the enabled build\n";
         return EXIT_FAILURE;
     }
-#ifdef HAKO_ENABLE_SENSOR_MODEL_V2
+#if defined(HAKO_ENABLE_SENSOR_MODEL_V2) && defined(HAKO_ENABLE_GYRO_SAMPLE_INPUT)
+    constexpr std::string_view expected_revision = "2026-10-31.1-flight-phase-goto-speed-baro-pressure-gyro-samples";
+#elif defined(HAKO_ENABLE_SENSOR_MODEL_V2)
     constexpr std::string_view expected_revision = "2026-10-31.1-flight-phase-goto-speed-baro-pressure";
+#elif defined(HAKO_ENABLE_GYRO_SAMPLE_INPUT)
+    constexpr std::string_view expected_revision = "2026-10-22.1-flight-phase-goto-speed-gyro-samples";
 #else
     constexpr std::string_view expected_revision = "2026-10-22.1-flight-phase-goto-speed";
 #endif
+#elif defined(HAKO_ENABLE_SENSOR_MODEL_V2) && defined(HAKO_ENABLE_GYRO_SAMPLE_INPUT)
+    constexpr std::string_view expected_revision = "2026-10-31.1-flight-phase-baro-pressure-gyro-samples";
 #elif defined(HAKO_ENABLE_SENSOR_MODEL_V2)
     constexpr std::string_view expected_revision = "2026-10-31.1-flight-phase-baro-pressure";
+#elif defined(HAKO_ENABLE_GYRO_SAMPLE_INPUT)
+    constexpr std::string_view expected_revision = "2026-10-11.1-flight-phase-gyro-samples";
 #else
     constexpr std::string_view expected_revision = "2026-10-11.1-flight-phase";
 #endif

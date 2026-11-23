@@ -26,6 +26,17 @@ if(HAKO_ENABLE_SENSOR_MODEL_V2)
         INTERFACE HAKO_ENABLE_SENSOR_MODEL_V2)
 endif()
 
+option(
+    HAKO_ENABLE_GYRO_SAMPLE_INPUT
+    "Pass timestamped gyro samples and rotor speeds to rate control"
+    OFF
+)
+
+if(HAKO_ENABLE_GYRO_SAMPLE_INPUT)
+    target_compile_definitions(hakoniwa_drone_control_adapter
+        INTERFACE HAKO_ENABLE_GYRO_SAMPLE_INPUT)
+endif()
+
 target_include_directories(hakoniwa_drone_control_adapter
     INTERFACE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
